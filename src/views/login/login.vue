@@ -24,7 +24,7 @@
                             </el-input>
                         </el-col>
                         <el-col :span="8">
-                            <img class="code-img" src="@/assets/img/code.jpg" alt="">
+                            <img class="code-img" :src="codeUrl" alt="">
                         </el-col>
                     </el-row>
                 </el-form-item>
@@ -36,18 +36,24 @@
                 <el-form-item>
                     <el-button class="btn" type="primary" @click="submit">登录</el-button>
                     <br />
-                    <el-button class="btn" type="primary">注册</el-button>
+                    <el-button class="btn" type="primary" @click="showRegister">注册</el-button>
                 </el-form-item>
             </el-form>
         </div>
         <img src="@/assets/img/login_right.png" alt="">
+        <register ref="register"></register>
     </div>
 </template>
 
 <script>
+import register from "./register";
 export default {
+    components: {
+        register
+    },
     data() {
         return {
+            codeUrl: process.env.VUE_APP_URL + "/captcha?type=login",
             form: {
                 phone: "",
                 password: "",
@@ -105,6 +111,9 @@ export default {
                     });
                 }
             });
+        },
+        showRegister() {
+            this.$refs.register.isShow = true;
         }
     }
 };
