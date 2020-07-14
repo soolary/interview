@@ -19,30 +19,32 @@
         </el-header>
         <el-container>
             <el-aside class="aside" width="auto">
-                <el-menu class="el-menu-vertical-demo" default-active="1" :collapse="collapse" router>
-                    <el-menu-item index="0">
+                <el-menu class="el-menu-vertical-demo" :default-active="$route.path" :collapse="collapse" router>
+                    <el-menu-item index="/business">
                         <i class="el-icon-pie-chart"></i>
                         <span slot="title">数据概览</span>
                     </el-menu-item>
-                    <el-menu-item index="1">
+                    <el-menu-item index="/question">
                         <i class="el-icon-user"></i>
                         <span slot="title">用户列表</span>
                     </el-menu-item>
-                    <el-menu-item index="2">
+                    <el-menu-item index="/chart">
                         <i class="el-icon-edit-outline"></i>
                         <span slot="title">题库列表</span>
                     </el-menu-item>
-                    <el-menu-item index="3">
+                    <el-menu-item index="/subject">
                         <i class="el-icon-office-building"></i>
                         <span slot="title">企业列表</span>
                     </el-menu-item>
-                    <el-menu-item index="4">
+                    <el-menu-item index="/userlist">
                         <i class="el-icon-notebook-2"></i>
                         <span slot="title">学科列表</span>
                     </el-menu-item>
                 </el-menu>
             </el-aside>
-            <el-main class="main">Main</el-main>
+            <el-main class="main">
+                <router-view></router-view>
+            </el-main>
         </el-container>
     </el-container>
 </template>
@@ -59,10 +61,15 @@ export default {
         };
     },
     created() {
-        getUserInfo().then(res => {
-            this.userInfo = res.data;
-            console.log("用户信息" + res);
-        });
+        console.log(this.$router);
+        getUserInfo()
+            .then(res => {
+                this.userInfo = res.data;
+                console.log("用户信息" + res);
+            })
+            .catch(err => {
+                console.log(err);
+            });
     },
     methods: {
         exit() {
