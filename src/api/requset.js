@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
+import { getLocal, removeToken } from '@/utils/local.js'
+import router from '@/router/index.js'
 
 var _fetch = axios.create({
     baseURL: process.env.VUE_APP_URL,
@@ -7,6 +9,7 @@ var _fetch = axios.create({
 })
 _fetch.interceptors.request.use(
     function (config) {
+        config.headers.token = getLocal()
         return config
     },
     function (error) {
@@ -17,6 +20,10 @@ _fetch.interceptors.response.use(
     function (response) {
         if (response.data.code == 200) {
             return response.data
+        } else if (response.data.code == 206) {
+            removeToken()
+            router.push('/login')
+            return Promise.reject('error')
         } else {
             Message.error(response.data.message)
             return Promise.reject('error')
@@ -26,25 +33,4 @@ _fetch.interceptors.response.use(
         return Promise.reject(error)
     }
 )
-function getRcode(data) {
-    return _fetch({
-        url: '/sendsms',
-        data: data,
-        method: 'post'
-    })
-}
-function registerUser(data) {
-    return _fetch({
-        url: '/register',
-        method: 'post',
-        data: data
-    })
-}
-function toLogin(data) {
-    return _fetch({
-        url: '/login',
-        method: 'post',
-        data: data
-    })
-}
-export { getRcode, registerUser, toLogin }
+export default _fetch

@@ -65,8 +65,8 @@ export default {
     data() {
         return {
             isShow: false,
-            uploadUrl: process.env.VUE_APP_URL + "uploads",
-            codeImg: process.env.VUE_APP_URL + "captcha?type",
+            uploadUrl: process.env.VUE_APP_URL + "/uploads",
+            codeImg: process.env.VUE_APP_URL + "/captcha?type",
             imageUrl: "",
             totalTime: 5,
             form: {
@@ -169,7 +169,7 @@ export default {
         handleAvatarSuccess(res) {
             this.form.avatar = res.data.file_path;
             this.$refs.form.validateField(["avatar"]);
-            this.imageUrl = process.env.VUE_APP_URL + res.data.file_path;
+            this.imageUrl = process.env.VUE_APP_URL + "/" + res.data.file_path;
         },
         beforeAvatarUpload(file) {
             const isJPG =
@@ -209,7 +209,7 @@ export default {
                 })
                     .then(res => {
                         console.log(res);
-                        this.$message.success(res.data.data.captcha + "");
+                        this.$message.success(res.data.captcha + "");
                     })
                     .catch(err => {
                         console.log("获取验证码错误信息", err);
@@ -222,7 +222,7 @@ export default {
             this.$refs.form.validate(result => {
                 if (result) {
                     registerUser(this.form).then(res => {
-                        if (res.data.code == 200) {
+                        if (res.code == 200) {
                             this.$message.success("注册成功");
                             this.isShow = false;
                         }

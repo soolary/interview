@@ -24,7 +24,7 @@
                             </el-input>
                         </el-col>
                         <el-col :span="8">
-                            <img class="code-img" :src="codeUrl" alt="">
+                            <img class="code-img" @click="codeClick" :src="codeUrl" alt="">
                         </el-col>
                     </el-row>
                 </el-form-item>
@@ -47,9 +47,16 @@
 
 <script>
 import register from "./register";
+import { toLogin } from "@/api/login";
+import { getLocal, saveLocal } from "@/utils/local";
 export default {
     components: {
         register
+    },
+    created() {
+        if (getLocal()) {
+            this.$router.push("/layout");
+        }
     },
     data() {
         return {
@@ -97,13 +104,22 @@ export default {
         };
     },
     methods: {
+        codeClick() {
+            this.codeUrl =
+                process.env.VUE_APP_URL + "/captcha?type=login&t=" + Date.now();
+        },
         submit() {
             this.$refs.form.validate(result => {
                 if (result) {
-                    this.$message({
-                        message: "6666666",
-                        type: "success"
+                    toLogin(this.form).then(res => {
+                        this.$message.success("登录成功");
+                        saveLocal(res.data.token);
+                        this.$router.push("/layout");
                     });
+                    //         this.$message({
+                    //             message: "6666666",
+                    //             type: "success"
+                    //         });
                 } else {
                     this.$message({
                         message: "菜鸡",
