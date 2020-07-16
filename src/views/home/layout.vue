@@ -9,9 +9,10 @@
                 <li class="t1">黑马面面</li>
                 <li class="nouse"></li>
                 <li>
-                    <img v-if="userInfo!=''" class="avatar" :src="baseUrl+'/'+userInfo.avatar" alt="" />
+                    <img v-if="$store.state.userInfo!=''" class="avatar" :src="baseUrl+'/'+$store.state.userInfo.avatar"
+                        alt="" />
                 </li>
-                <li class="t2">{{userInfo.username}}</li>
+                <li class="t2">{{$store.state.userInfo.username}}</li>
                 <li>
                     <el-button type="primary" @click="exit">退出</el-button>
                 </li>
@@ -56,7 +57,6 @@ export default {
     data() {
         return {
             baseUrl: process.env.VUE_APP_URL,
-            userInfo: "",
             collapse: false
         };
     },
@@ -64,7 +64,7 @@ export default {
         console.log(this.$router);
         getUserInfo()
             .then(res => {
-                this.userInfo = res.data;
+                this.$store.state.userInfo = res.data;
                 console.log("用户信息" + res);
             })
             .catch(err => {
