@@ -22,14 +22,25 @@ const router = new VueRouter({
         component: login
     }, {
         path: "/layout",
+        redirect: "/layout/business",
         component: layout,
         children: [
-            { path: '/business', component: business },
-            { path: '/question', component: question },
-            { path: '/chart', component: chart },
-            { path: '/subject', component: subject },
-            { path: '/userlist', component: userlist },
+            { path: '/layout/business', component: business },
+            { path: '/layout/question', component: question },
+            { path: '/layout/chart', component: chart },
+            { path: '/layout/subject', component: subject },
+            { path: '/layout/userlist', component: userlist },
         ]
     }]
+})
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+router.beforeEach((to, from, next) => {
+    NProgress.start();
+    next()
+})
+router.afterEach((to) => {
+    NProgress.done()
+    document.title = to.meta.title
 })
 export default router
