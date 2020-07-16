@@ -20,23 +20,23 @@
         <el-container>
             <el-aside class="aside" width="auto">
                 <el-menu class="el-menu-vertical-demo" :default-active="$route.path" :collapse="collapse" router>
-                    <el-menu-item index="/business">
+                    <el-menu-item index="/chart">
                         <i class="el-icon-pie-chart"></i>
                         <span slot="title">数据概览</span>
                     </el-menu-item>
-                    <el-menu-item index="/question">
+                    <el-menu-item index="/userlist">
                         <i class="el-icon-user"></i>
                         <span slot="title">用户列表</span>
                     </el-menu-item>
-                    <el-menu-item index="/chart">
+                    <el-menu-item index="/question">
                         <i class="el-icon-edit-outline"></i>
                         <span slot="title">题库列表</span>
                     </el-menu-item>
-                    <el-menu-item index="/subject">
+                    <el-menu-item index="/business">
                         <i class="el-icon-office-building"></i>
                         <span slot="title">企业列表</span>
                     </el-menu-item>
-                    <el-menu-item index="/userlist">
+                    <el-menu-item index="/subject">
                         <i class="el-icon-notebook-2"></i>
                         <span slot="title">学科列表</span>
                     </el-menu-item>
@@ -73,11 +73,17 @@ export default {
     },
     methods: {
         exit() {
-            logout().then(() => {
-                this.$message.success("退出成功");
-                removeToken();
-                this.$router.push("/login");
-            });
+            this.$confirm("hey we go？？？", "attention", {
+                confirmButtonText: "yeah~~~",
+                cancelButtonText: "oh~no~~",
+                type: "warning"
+            }).then(() =>
+                logout().then(() => {
+                    this.$message.success("退出成功");
+                    removeToken();
+                    this.$router.push("/login");
+                })
+            );
         }
     }
 };
