@@ -1,4 +1,4 @@
-import _fetch from './requset.js'
+import _fetch from '@/utils/request.js'
 // import { getLocal } from '@/utils/local.js'
 function getUserInfo() {
     return _fetch({

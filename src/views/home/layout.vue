@@ -61,11 +61,11 @@ export default {
         };
     },
     created() {
-        console.log(this.$router);
+        // console.log(this.$router);
         getUserInfo()
             .then(res => {
                 this.$store.state.userInfo = res.data;
-                console.log("用户信息" + res);
+                // console.log("用户信息" + res);
             })
             .catch(err => {
                 console.log(err);
