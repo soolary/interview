@@ -41,17 +41,17 @@
             </el-form>
         </div>
         <img src="@/assets/img/login_right.png" alt="">
-        <register ref="register"></register>
+        <Register ref="register"></Register>
     </div>
 </template>
 
 <script>
-import register from "./register";
+import Register from "./Register";
 import { toLogin } from "@/api/login";
 import { getLocal, saveLocal } from "@/utils/local";
 export default {
     components: {
-        register
+        Register
     },
     created() {
         if (getLocal()) {

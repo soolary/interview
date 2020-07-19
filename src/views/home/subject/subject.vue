@@ -77,7 +77,7 @@
 
 <script>
 import { getSubjectList, setSubjectStatus, subjectDel } from "@/api/subject.js";
-import subjectAdd from "./subjectAdd.vue";
+import SubjectAdd from "./SubjectAdd.vue";
 export default {
     data() {
         return {
@@ -101,7 +101,7 @@ export default {
         };
     },
     components: {
-        subjectAdd
+        SubjectAdd
     },
     methods: {
         getData() {
