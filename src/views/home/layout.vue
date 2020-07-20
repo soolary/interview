@@ -132,9 +132,9 @@ export default {
             margin-right: 20px;
         }
     }
-    .aside {
-        background-color: #00f;
-    }
+    // .aside {
+    //     background-color: pink;
+    // }
     .main {
         background-color: #e8e9ec;
     }
