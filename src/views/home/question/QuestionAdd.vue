@@ -76,10 +76,28 @@ import Upload from "./Upload.vue";
 import { addQuestionData, editQuestionData } from "@/api/question.js";
 
 export default {
+    watch: {
+        isShow(newVal) {
+            if (newVal == false) {
+                this.form = {
+                    rid: "", //string	学科编号
+                    name: "", //string	学科名称
+                    short_name: "", //string	学科简称
+                    intro: "", //string	学科简介
+                    remark: "", //string	备注
+                };
+                // this.$refs.form.clearValidate();
+            } else {
+                this.$nextTick(() => {
+                    this.$refs.form.clearValidate();
+                });
+            }
+        },
+    },
     components: {
         quillEditor,
         AllSelect,
-        Upload
+        Upload,
     },
     props: [
         "subjectList",
@@ -87,7 +105,7 @@ export default {
         "businessList",
         "typeObj",
         "difficultyObj",
-        "mode"
+        "mode",
     ],
     data() {
         return {
@@ -111,88 +129,116 @@ export default {
                     {
                         label: "A",
                         text: "狗不理",
-                        image: ""
+                        image: "",
                     },
                     {
                         label: "B",
                         text: "猫不理",
-                        image: ""
+                        image: "",
                     },
                     {
                         label: "C",
                         text: "麻花",
-                        image: ""
+                        image: "",
                     },
                     {
                         label: "D",
                         text: "炸酱面",
-                        image: ""
-                    } //试题备注
-                ]
+                        image: "",
+                    }, //试题备注
+                ],
             },
             rules: {
                 subject: [
-                    { required: true, message: "请选择学科", trigger: "change" }
+                    {
+                        required: true,
+                        message: "请选择学科",
+                        trigger: "change",
+                    },
                 ], //学科
                 step: [
-                    { required: true, message: "请选择阶段", trigger: "change" }
+                    {
+                        required: true,
+                        message: "请选择阶段",
+                        trigger: "change",
+                    },
                 ], //阶段
                 enterprise: [
-                    { required: true, message: "请选择企业", trigger: "change" }
+                    {
+                        required: true,
+                        message: "请选择企业",
+                        trigger: "change",
+                    },
                 ], //企业
                 city: [
-                    { required: true, message: "请选择城市", trigger: "change" }
+                    {
+                        required: true,
+                        message: "请选择城市",
+                        trigger: "change",
+                    },
                 ], //城市
                 type: [
-                    { required: true, message: "请选择题型", trigger: "change" }
+                    {
+                        required: true,
+                        message: "请选择题型",
+                        trigger: "change",
+                    },
                 ], //题型
                 difficulty: [
-                    { required: true, message: "请选择难度", trigger: "change" }
+                    {
+                        required: true,
+                        message: "请选择难度",
+                        trigger: "change",
+                    },
                 ], //难度
                 title: [
-                    { required: true, message: "请输入题目", trigger: "change" }
+                    {
+                        required: true,
+                        message: "请输入题目",
+                        trigger: "change",
+                    },
                 ], //题目
                 single_select_answer: [
                     {
                         required: true,
                         message: "请选择单选答案",
-                        trigger: "change"
-                    }
+                        trigger: "change",
+                    },
                 ], //单选答案
                 multiple_select_answer: [
                     {
                         required: true,
                         message: "请选择多选答案",
-                        trigger: "change"
-                    }
+                        trigger: "change",
+                    },
                 ], //多选答案
                 short_answer: [
                     {
                         required: true,
                         message: "请输入简答答案",
-                        trigger: "change"
-                    }
+                        trigger: "change",
+                    },
                 ], //简答答案
                 answer_analyze: [
                     {
                         required: true,
                         message: "请输入答案解析",
-                        trigger: "change"
-                    }
+                        trigger: "change",
+                    },
                 ], //答案解析
                 remark: [
                     {
                         required: true,
                         message: "请输入试题备注",
-                        trigger: "change"
-                    }
-                ] //试题备注
-            }
+                        trigger: "change",
+                    },
+                ], //试题备注
+            },
         };
     },
     methods: {
         submit() {
-            this.$refs.form.validate(result => {
+            this.$refs.form.validate((result) => {
                 if (result) {
                     if (this.mode == "add") {
                         addQuestionData(this.form).then(() => {
@@ -230,10 +276,10 @@ export default {
             this.$refs.form.validateField([
                 "single_select_answer",
                 "multiple_select_answer",
-                "short_answer"
+                "short_answer",
             ]);
-        }
-    }
+        },
+    },
 };
 </script>
 
