@@ -34,7 +34,7 @@
                     <el-col :span="5">
                         <el-form-item label="题型" prop="type">
                             <el-select v-model="form.type">
-                                <el-option :label="form.type" :value="value" v-for="(value,key,index) in difficultyObj"
+                                <el-option :label="form.type" :value="value" v-for="(value,key,index) in typeObj"
                                     :key="index">
                                     {{value}}</el-option>
                             </el-select>
@@ -82,8 +82,8 @@
                     <el-col :span="12">
                         <el-form-item label-width="10px">
                             <el-button type="primary" @click="search">搜索</el-button>
-                            <el-button>清除</el-button>
-                            <el-button type="primary" @click="reset" class="el-icon-plus">新增试题</el-button>
+                            <el-button @click="reset">清除</el-button>
+                            <el-button type="primary" @click="add" class="el-icon-plus">新增试题</el-button>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -96,7 +96,7 @@
                         {{(pagination.currentPage-1)*pagination.pageSize+scope.$index+1}}
                     </template>
                 </el-table-column>
-                <el-table-column label="题目" width="400px">
+                <el-table-column label="题目">
                     <template v-slot="scope">
                         <div v-html="scope.row.title"></div>
                     </template>
@@ -135,9 +135,8 @@
             </el-table>
             <div class="pagenation">
                 <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                    :current-page="pagination.currentPage" :page-sizes="[5, 200, 300, 400,500,600]"
-                    :page-size="pagination.pageSize" layout="total, sizes, prev, pager, next, jumper"
-                    :total="pagination.total"></el-pagination>
+                    :current-page="pagination.currentPage" :page-sizes="[1,2,4,8]" :page-size="pagination.pageSize"
+                    layout="total, sizes, prev, pager, next, jumper" :total="pagination.total"></el-pagination>
             </div>
         </el-card>
         <!-- <Question-add></Question-add> -->
@@ -159,7 +158,6 @@ export default {
     components: {
         QuestionAdd
     },
-    props: ["mode"],
     data() {
         return {
             form: {
@@ -178,8 +176,9 @@ export default {
             pagination: {
                 currentPage: 1,
                 pageSize: 5,
-                total: 10
+                total: 1
             },
+            mode: "add",
             stepObj: { 1: "初级", 2: "中级", 3: "高级" }, //阶段
             typeObj: { 1: "单选", 2: "多选", 3: "简答" }, //类型
             difficultyObj: { 1: "简单", 2: "一般", 3: "困难" },
@@ -189,14 +188,10 @@ export default {
         };
     },
     created() {
-        let _query = {
-            page: 1,
-            limit: 1000
-        };
-        getSubjectList(_query).then(res => {
+        getSubjectList({ limit: 1000 }).then(res => {
             this.subjectList = res.data.items;
         });
-        getBusinessList(_query).then(res => {
+        getBusinessList({ limit: 1000 }).then(res => {
             this.businessList = res.data.items;
             // console.log(res.data.items);
         });
@@ -212,6 +207,13 @@ export default {
             getQuestionData(_query).then(res => {
                 window.console.log("题库列表数据:", res);
                 this.tableData = res.data.items;
+                this.tableData.forEach(item => {
+                    item.city = item.city.split(",");
+                    item.multiple_select_answer = item.multiple_select_answer.split(
+                        ","
+                    );
+                });
+                this.pagination.total = res.data.pagination.total;
             });
         },
         search() {
@@ -266,15 +268,16 @@ export default {
                         text: "炸酱面",
                         image: ""
                     }
-                ]
+                ], //试题备注
+                rules: []
             };
             // 3:打开弹框
-            this.$refs.addQuestion.dialogVisible = true;
+            this.$refs.addQuestion.isShow = true;
         },
         edit(row) {
             this.mode = "edit";
             this.$refs.addQuestion.form = JSON.parse(JSON.stringify(row));
-            this.$refs.addQuestion.dialogVisible = true;
+            this.$refs.addQuestion.isShow = true;
         },
         del(id) {
             this.$confirm("您确认删除此信息吗", "warning", {

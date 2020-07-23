@@ -2,7 +2,7 @@
     <div>
         <div class="subject">
             <el-card>
-                <el-form :model='form' label-width="100px" inline>
+                <el-form :model='form' ref="form" label-width="100px" inline>
                     <el-form-item label="学科编号" prop="rid">
                         <el-input v-model="form.rid"></el-input>
                     </el-form-item>

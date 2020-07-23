@@ -65,6 +65,17 @@ export default {
         getUserInfo()
             .then(res => {
                 this.$store.state.userInfo = res.data;
+                this.$store.state.role = res.data.role;
+                // if (!this.route.meta.role.includes(this.$store.state.role)) {
+                //     this.$message.warning("访问无效");
+                //     removeToken();
+                //     this.$router.push("/login");
+                // }
+                // if (res.data.status == 0) {
+                //     this.$message.warning("访问无效");
+                //     removeToken();
+                //     this.$router.push("/login");
+                // }
                 // console.log("用户信息" + res);
             })
             .catch(err => {
